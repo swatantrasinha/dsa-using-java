@@ -25,9 +25,14 @@ Output Format : Return the equilibrium index of the given array. If no such inde
 public class Assignment5 {
     public static void main(String[] args) {
         Assignment5 obj= new Assignment5();
-        int[] arr= new int[]{-7, 1, 5, 2, -4, 3, 0};
+        // int[] arr= new int[]{-7, 1, 5, 2, -4, 3, 0};
+        int[] arr= new int[]{1, 2, 3, 7, 1, 2, 3};
         int result= obj.solve(arr);
-        System.out.println("result is : " + result);
+        System.out.println("result  by method 1 is : " + result);
+
+        int result2= obj.solve2(arr);
+        System.out.println(" ");
+        System.out.println("result by method 2 is : " + result2);
     }
 
     public int solve(int[] A) {
@@ -39,7 +44,6 @@ public class Assignment5 {
 
             for(int j=0;j<=position-1;j++) {
                 sumLeft = sumLeft + A[j];
-
             }
 
             for(int k=position+1;k<A.length;k++) {
@@ -53,4 +57,49 @@ public class Assignment5 {
         }
         return response;
     }
+
+    /* this solve will work but its nested loop.
+     since   1 <= A[i] <= 10^9
+     so with nesting , time-complexity will be too much
+     instead we will use prefixArray in method solve2 */
+
+    public int solve2(int[] A) {
+        System.out.println("Lets check by method 2");
+        int n = A.length;
+        int[] pfArray = new int[n];
+        int[] pfArrayRev = new int[n];
+
+        // create pfArray
+        pfArray[0] = A[0];
+        for (int i = 1; i < pfArray.length; i++) {
+            pfArray[i] = pfArray[i - 1] + A[i];
+        }
+        // print pfArray
+        for (int idx = 0; idx < pfArray.length; idx++) {
+            System.out.print( pfArray[idx] + " \t ");
+        }
+
+        // create pfArrayRev
+        pfArrayRev[n - 1] = A[n - 1];
+        for (int i = n - 2; i >= 0; i--) {
+            pfArrayRev[i] = pfArrayRev[i + 1] + A[i];
+        }
+
+        System.out.println(" ");
+
+        // print pfArrayRev
+        for (int idxx = 0; idxx < pfArrayRev.length; idxx++) {
+            System.out.print( pfArrayRev[idxx] + " \t ");
+        }
+
+        for (int i = 0; i < n; i++) {
+            if (pfArray[i] == pfArrayRev[i]) {
+                return i;
+            }
+        }
+
+        return -1;
+
+    }
+
 }
